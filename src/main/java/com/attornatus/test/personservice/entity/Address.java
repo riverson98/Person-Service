@@ -1,32 +1,47 @@
 package com.attornatus.test.personservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "enderecos")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("idEndereco")
     private Integer addressId;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "person_id")
+    @JsonProperty("idPessoa")
     private Person pId;
 
     @Column(name = "cep", nullable = false, length = 20)
+    @JsonProperty("cep")
+    @NotBlank
     private String zip;
     @Column(name = "end_principal", nullable = false)
+    @JsonProperty("endPrincipal")
+    @NotNull
     private Boolean mainAddress;
 
     @Column(name = "logradouro", nullable = false)
+    @JsonProperty("rua")
+    @NotBlank
     private String nameOfTheStreet;
 
     @Column(name = "numero", nullable = false)
+    @JsonProperty("numero")
+    @NotBlank
     private String number;
 
     @Column(name = "cidade", nullable = false)
+    @JsonProperty("cidade")
+    @NotBlank
     private String city;
 
 

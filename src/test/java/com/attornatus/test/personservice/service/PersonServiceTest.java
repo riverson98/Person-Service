@@ -1,10 +1,15 @@
 package com.attornatus.test.personservice.service;
 
 import com.attornatus.test.personservice.dto.PersonDto;
+import com.attornatus.test.personservice.entity.Address;
 import com.attornatus.test.personservice.entity.Person;
+import com.attornatus.test.personservice.exceptions.BadRequestException;
+import com.attornatus.test.personservice.helpers.AddressEntityCreator;
 import com.attornatus.test.personservice.helpers.PersonDtoCreator;
 import com.attornatus.test.personservice.helpers.PersonEntityCreator;
+import com.attornatus.test.personservice.repository.AddressRepository;
 import com.attornatus.test.personservice.repository.PersonRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class PersonServiceTest {
@@ -27,13 +32,18 @@ class PersonServiceTest {
     @Mock
     private PersonRepository personRepository;
 
+    @Mock
+    private AddressRepository addressRepository;
+
     private final PersonDto personDto = PersonDtoCreator.createPersonDto();
 
     private final Person personEntity = PersonEntityCreator.createPersonEntity();
 
+    private final Address addressEntity = AddressEntityCreator.createAddressEntity();
+
     @Test
-    @DisplayName("savePerson: should return a Person")
-    void savePerson_ReturnPersonDto_WhenIsSuccessfully() {
+    @DisplayName("createPerson: should return a Person")
+    void createPerson_ReturnPersonDto_WhenIsSuccessfully() {
         Mockito.when(personRepository.save(Mockito.any()))
                 .thenReturn(personEntity);
 
@@ -50,10 +60,16 @@ class PersonServiceTest {
         Mockito.when(personRepository.findById(Mockito.anyInt()))
                 .thenReturn(Optional.of(personEntity));
 
+        Mockito.when(personRepository.save(Mockito.any()))
+                .thenReturn(personEntity);
+
+        Mockito.when(addressRepository.save(Mockito.any()))
+                .thenReturn(addressEntity);
+
         PersonDto dto = personService.updatePerson(1, this.personDto);
 
-        assertThat(dto).extracting("id", "name")
-                .contains(2, "Bora mulher do bill");
+        assertThat(dto).extracting("personId", "name")
+                .contains(1, "Bora mulher do bill");
 
     }
 

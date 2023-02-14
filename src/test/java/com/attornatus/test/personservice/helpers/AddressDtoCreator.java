@@ -7,6 +7,7 @@ public class AddressDtoCreator {
 
     public static AddressDto createAddressDto(){
      return AddressDto.builder()
+             .idPerson(1)
              .zip("00000-000")
              .mainAddress(Boolean.TRUE)
              .city("Itajai")

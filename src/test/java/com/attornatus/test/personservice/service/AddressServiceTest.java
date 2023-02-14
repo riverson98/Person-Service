@@ -5,7 +5,9 @@ import com.attornatus.test.personservice.dto.PersonDto;
 import com.attornatus.test.personservice.entity.Address;
 import com.attornatus.test.personservice.helpers.AddressDtoCreator;
 import com.attornatus.test.personservice.helpers.AddressEntityCreator;
+import com.attornatus.test.personservice.helpers.PersonDtoCreator;
 import com.attornatus.test.personservice.repository.AddressRepository;
+import com.attornatus.test.personservice.repository.PersonRepository;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,34 +32,27 @@ class AddressServiceTest {
     @Mock
     private AddressRepository addressRepository;
 
+    @Mock
+    private PersonService personService;
+
     private final Address addressEntity = AddressEntityCreator.createAddressEntity();
 
     private final AddressDto addressDto = AddressDtoCreator.createAddressDto();
+
+    private final PersonDto personDto = PersonDtoCreator.createPersonDto();
 
     @Test
     @DisplayName("createAddress should return a address")
     void createAddress_ReturnAddressDto_WhenSuccessfully() {
         Mockito.when(addressRepository.save(Mockito.any()))
                 .thenReturn(addressEntity);
+        Mockito.when(personService.findById(Mockito.anyInt()))
+                .thenReturn(personDto);
 
-        AddressDto dto = addressService.createAddress(addressDto);
+        AddressDto dto = addressService.createAddress(List.of(addressDto));
 
         assertThat(dto).isNotNull()
                 .extracting("zip", "mainAddress", "city")
                 .contains("00000-000", true, "Itajai");
-    }
-
-    @Test
-    @DisplayName("ListAllAddress should return a list of addresses")
-    void listAllAddresses_ReturnListOfAddress_WhenSuccessfully() {
-        Mockito.when(addressRepository.findAll())
-                .thenReturn(List.of(addressEntity));
-
-        List<AddressDto> dto = addressService.listAllAddresses();
-
-        assertThat(dto).isNotNull()
-                .hasSize(1)
-                .extracting("zip", "mainAddress", "city")
-                .contains(tuple("00000-000", true, "Itajai"));
     }
 }

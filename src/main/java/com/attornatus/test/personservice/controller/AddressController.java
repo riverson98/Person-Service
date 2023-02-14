@@ -1,12 +1,14 @@
 package com.attornatus.test.personservice.controller;
 
 import com.attornatus.test.personservice.dto.AddressDto;
-import com.attornatus.test.personservice.dto.PersonDto;
-import com.attornatus.test.personservice.entity.Address;
 import com.attornatus.test.personservice.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,18 +20,8 @@ public class AddressController {
     private AddressService addressService;
 
     @PostMapping
-    public ResponseEntity<AddressDto> createAddress(@RequestBody List<AddressDto> addressDto){
+    public ResponseEntity<AddressDto> createAddress(@RequestBody @Valid List<AddressDto> addressDto){
         return ResponseEntity.ok(this.addressService.createAddress(addressDto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<AddressDto>> allAddress(){
-        return ResponseEntity.ok(this.addressService.listAllAddresses());
-    }
-
-    @PutMapping("{addressId}")
-    public ResponseEntity<AddressDto> updateAddress(@PathVariable Integer addressId, @RequestBody AddressDto addressDto){
-        addressDto.setAddressId(addressId);
-        return ResponseEntity.ok(this.addressService.updateAddress(addressId, addressDto));
-    }
 }
