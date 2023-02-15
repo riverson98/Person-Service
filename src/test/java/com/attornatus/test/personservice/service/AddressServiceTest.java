@@ -7,8 +7,6 @@ import com.attornatus.test.personservice.helpers.AddressDtoCreator;
 import com.attornatus.test.personservice.helpers.AddressEntityCreator;
 import com.attornatus.test.personservice.helpers.PersonDtoCreator;
 import com.attornatus.test.personservice.repository.AddressRepository;
-import com.attornatus.test.personservice.repository.PersonRepository;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class AddressServiceTest {

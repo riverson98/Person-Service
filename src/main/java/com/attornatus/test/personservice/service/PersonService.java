@@ -46,10 +46,12 @@ public class PersonService {
     }
 
     public List<PersonDto> listAllPersons() {
-         return personRepository.findAll()
+         var persons = personRepository.findAll()
                 .stream()
                 .map(EntityDtoUtil::toPersonDto)
                 .collect(Collectors.toList());
+
+         return persons;
     }
 
     public PersonDto findById(int personId) {

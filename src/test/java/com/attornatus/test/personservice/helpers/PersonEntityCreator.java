@@ -9,6 +9,7 @@ public class PersonEntityCreator {
     public static Person createPersonEntity(){
         Person person = new Person();
         person.setPersonId(1);
+        person.setBirth("01/01/1998");
         person.setName("Bora Bill");
         person.setAddress(List.of(AddressEntityCreator.createAddressEntity()));
         return person;

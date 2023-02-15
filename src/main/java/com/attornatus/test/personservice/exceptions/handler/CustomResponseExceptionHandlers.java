@@ -6,19 +6,19 @@ import com.attornatus.test.personservice.exceptions.BaseCustomException;
 import com.attornatus.test.personservice.exceptions.InternalServerErrorException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
 @ControllerAdvice
-public class CustomResponseExceptionHandlers {
+public class CustomResponseExceptionHandlers extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {BaseCustomException.class})
     public ResponseEntity<ErrorResponse> customExceptionHandler(BaseCustomException customException){
@@ -43,6 +43,14 @@ public class CustomResponseExceptionHandlers {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
+                                                                  HttpStatusCode status, WebRequest request) {
+        log.info("handleMethodArgumentNotValid {}", ex.getMessage());
+        var errorResponse = new ErrorResponse(BadRequestException.ERROR_CODE,
+                BadRequestException.DEFAULT_MESSAGE);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 }

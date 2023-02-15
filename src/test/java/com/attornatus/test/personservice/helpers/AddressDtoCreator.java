@@ -1,7 +1,6 @@
 package com.attornatus.test.personservice.helpers;
 
 import com.attornatus.test.personservice.dto.AddressDto;
-import com.attornatus.test.personservice.dto.PersonDto;
 
 public class AddressDtoCreator {
 
